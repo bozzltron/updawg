@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Solo</title>
+</head>
+
+<body>
+
+	<form>
+		<input type="text" name="latitude" value="" />
+		<input type="text" name="latitude" value="" />
+		<button>Submit</button>
+	</form>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		// CLIENT ID	6cb56ab8349f4f719e7865d0f6429946
+		// CLIENT SECRET	b0413f9089a749cc858d3187b026487a
+		// WEBSITE URL	https://www.balancedscale.com
+		// REDIRECT URI	http://www.balancedscale.com/instagram
+
+		$.getJSON('http://localhost:3000', function(json){
+			console.log(json);
+		});
+
+	</script>
+
+</body>
+
+</html>
