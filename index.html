@@ -50,6 +50,8 @@
 		
 		$(document).ready(function(){
 			
+			getData();
+
 			$('.gllpLatlonPicker').on('location_changed', function(event, data) {
 				getData();
 			});
@@ -76,7 +78,7 @@
 	<script id="pic-template" type="text/template">
 	
 		<% _.each(posts, function(post){ %>
-			<img src="<%= post.images.low_resolution.url %>"/>
+			<a href="<%= post.link %>"><img src="<%= post.images.low_resolution.url %>"/></a>
 		<% }); %>
 
 	</script>
