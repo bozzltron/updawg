@@ -23,24 +23,23 @@ http.createServer(function (req, res) {
 	// ajax search
   	} else if(queryData.pathname == '/search') {
 
+  		console.log(queryData);
   		res.writeHead(200, {'Content-Type': 'application/json'});
 
   		var now = Math.round((new Date()).getTime() / 1000);
   		var delta = 86400 * 2;
   		var later = now - delta;
-        
-  		console.log(now, later);
 
 	  	Instagram.media.search({ 
-	  		lat: 41.5908, 
-	  		lng: 93.6208, 
+	  		lat: queryData.query.lat, 
+	  		lng: queryData.query.long, 
 	  		max_timestamp: now,
 	  		min_timestamp: later,
 	  		complete:function(data, pagination){
 	  		res.end(JSON.stringify(data));
 	  	}});
 
-	// file server 
+	// basic file server 
   	} else {
 
   		if(queryData.pathname != '/favicon.ico') {

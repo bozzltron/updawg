@@ -50,24 +50,33 @@
 		
 		$(document).ready(function(){
 			
-
-			$.getJSON('/search', function(json){
-				console.log('response');
-				console.log(json);
-				
-				var template = _.template($("#pic-template").html());
-				var html = template({posts:json});
-				$(".content").html(html);
+			$('.gllpLatlonPicker').on('location_changed', function(event, data) {
+				getData();
 			});
 
 		});
+
+		function getData() {
+			console.log("hi");
+			$.getJSON('/search', {
+				lat: $('.gllpLatitude').val(),
+				long: $('.gllpLongitude').val()
+			}, render);
+
+		}
+
+		function render (json){	
+			var template = _.template($("#pic-template").html());
+			var html = template({posts:json});
+			$(".content").html(html);
+		}
 
 	</script>
 
 	<script id="pic-template" type="text/template">
 	
 		<% _.each(posts, function(post){ %>
-			<img src="<%= post.images.standard_resolution.url %>"/>
+			<img src="<%= post.images.low_resolution.url %>"/>
 		<% }); %>
 
 	</script>
