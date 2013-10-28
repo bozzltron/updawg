@@ -13,20 +13,50 @@ http.createServer(function (req, res) {
 
 	var queryData = url.parse(req.url, true);
 
+	// return the index file
   	if(queryData.pathname == '/') {
 
   		var index = index = fs.readFileSync('index.html');
   		res.writeHead(200, {'Content-Type': 'text/html'});
 		res.end(index);
 
+	// ajax search
   	} else if(queryData.pathname == '/search') {
 
   		res.writeHead(200, {'Content-Type': 'application/json'});
 
-	  	Instagram.media.search({ lat: 41.5908, lng: 93.6208, complete:function(data, pagination){
+  		var now = Math.round((new Date()).getTime() / 1000);
+  		var delta = 86400 * 2;
+  		var later = now - delta;
+        
+  		console.log(now, later);
+
+	  	Instagram.media.search({ 
+	  		lat: 41.5908, 
+	  		lng: 93.6208, 
+	  		max_timestamp: now,
+	  		min_timestamp: later,
+	  		complete:function(data, pagination){
 	  		res.end(JSON.stringify(data));
 	  	}});
 
+	// file server 
+  	} else {
+
+  		if(queryData.pathname != '/favicon.ico') {
+
+	  		var file = fs.readFileSync(queryData.pathname.substr(1)),
+	  		    mimetypes = {
+		  			'css': 'text/css',
+		  			'js': 'application/javascript',
+		  			'html': 'text/html'
+		  		},
+	  			extension = queryData.pathname.split('.')[1];
+
+	  		res.writeHead(200, {'Content-Type': mimetypes[extension] });
+			res.end(file);
+
+		}
   	}
 
 }).listen(3000);

@@ -3,6 +3,10 @@
 
 <head>
   <title>Solo</title>
+
+  <style>
+  	.gllpMap        { width: 500px; height: 250px; }
+  </style>
 </head>
 
 <body>
@@ -13,14 +17,30 @@
 		<button>Submit</button>
 	</form> -->
 
+
+	<fieldset class="gllpLatlonPicker">
+		<input type="text" class="gllpSearchField">
+		<input type="button" class="gllpSearchButton" value="search">
+		<br/><br/>
+		<div class="gllpMap">Google Maps</div>
+		<br/>
+		lat/lon:
+			<input type="text" class="gllpLatitude" value="20"/>
+			/
+			<input type="text" class="gllpLongitude" value="20"/>
+		zoom: <input type="text" class="gllpZoom" value="3"/>
+		<input type="button" class="gllpUpdateButton" value="update map">
+	</fieldset>
+
 	<div class="content">
 		Loading...
 	</div>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script src="/js/jquery-gmaps-picker.js"></script>
 	<script type="text/javascript">
 
 		// CLIENT ID	6cb56ab8349f4f719e7865d0f6429946
