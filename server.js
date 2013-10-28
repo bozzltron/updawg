@@ -24,7 +24,6 @@ http.createServer(function (req, res) {
 	// ajax search
   	} else if(queryData.pathname == '/search') {
 
-  		console.log(queryData);
   		res.writeHead(200, {'Content-Type': 'application/json'});
 
   		var now = Math.round((new Date()).getTime() / 1000);

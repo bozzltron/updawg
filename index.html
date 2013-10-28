@@ -3,33 +3,21 @@
 
 <head>
   <title>Solo</title>
-
-  <style>
-  	.gllpMap        { width: 500px; height: 250px; }
-  </style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
 
-<!-- 	<form>
-		<input type="text" name="latitude" value="" />
-		<input type="text" name="latitude" value="" />
-		<button>Submit</button>
-	</form> -->
-
-
 	<fieldset class="gllpLatlonPicker">
-		<input type="text" class="gllpSearchField">
-		<input type="button" class="gllpSearchButton" value="search">
-		<br/><br/>
 		<div class="gllpMap">Google Maps</div>
-		<br/>
-		lat/lon:
-			<input type="text" class="gllpLatitude" value="20"/>
-			/
-			<input type="text" class="gllpLongitude" value="20"/>
-		zoom: <input type="text" class="gllpZoom" value="3"/>
-		<input type="button" class="gllpUpdateButton" value="update map">
+		<div class="field-wrap">
+			<input type="text" class="gllpSearchField">
+			<input type="button" class="gllpSearchButton" value="search">		
+			lat: <input type="text" class="gllpLatitude" value="20"/>
+			long: <input type="text" class="gllpLongitude" value="20"/>
+			zoom: <input type="text" class="gllpZoom" value="3"/>
+			<input type="button" class="gllpUpdateButton" value="update map">
+		</div>
 	</fieldset>
 
 	<div class="content">
@@ -49,7 +37,8 @@
 		// REDIRECT URI	http://www.balancedscale.com/instagram
 		
 		$(document).ready(function(){
-			
+
+			getLocation();
 			getData();
 
 			$('.gllpLatlonPicker').on('location_changed', function(event, data) {
@@ -58,13 +47,23 @@
 
 		});
 
+		function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} 
+		}
+
+		function showPosition(position) {
+			$('.gllpLatitude').val(position.coords.latitude);
+			$('.gllpLongitude').val(position.coords.longitude);
+			$('.gllpUpdateButton').click();
+		}		
+
 		function getData() {
-			console.log("hi");
 			$.getJSON('/search', {
 				lat: $('.gllpLatitude').val(),
 				long: $('.gllpLongitude').val()
 			}, render);
-
 		}
 
 		function render (json){	
