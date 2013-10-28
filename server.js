@@ -4,7 +4,8 @@
 var Instagram = require('instagram-node-lib'),
 	http = require('http'),
 	url = require('url'),
-	fs = require('fs');
+	fs = require('fs'),
+	port = process.env.PORT || 3000;
 
 Instagram.set('client_id', '6cb56ab8349f4f719e7865d0f6429946');
 Instagram.set('client_secret', 'b0413f9089a749cc858d3187b026487a');
@@ -58,5 +59,5 @@ http.createServer(function (req, res) {
 		}
   	}
 
-}).listen(3000);
+}).listen(port);
 console.log("Solo Up!");
