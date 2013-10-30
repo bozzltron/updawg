@@ -70,14 +70,14 @@
 	</script>
 
 	<script id="pic-template" type="text/template">
-	
-		<% _.each(statuses, function(status){ %>
-			<div class="tweet" href="#"><%= status.text %></div>
-		<% }); %>
 
 		<% _.each(posts, function(post){ %>
 			<a class="post" href="<%= post.link %>"><img src="<%= post.images.low_resolution.url %>"/></a>
 		<% }); %>
+
+		<% _.each(statuses, function(status){ %>
+			<div class="tweet" href="#"><%= status.text %></div>
+		<% }); %>		
 
 	</script>
 
