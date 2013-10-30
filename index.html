@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Solo</title>
+  <title>smells like updawg</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -27,15 +27,10 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 	<script src="/js/jquery-gmaps-picker.js"></script>
 	<script type="text/javascript">
 
-		// CLIENT ID	6cb56ab8349f4f719e7865d0f6429946
-		// CLIENT SECRET	b0413f9089a749cc858d3187b026487a
-		// WEBSITE URL	https://www.balancedscale.com
-		// REDIRECT URI	http://www.balancedscale.com/instagram
-		
 		$(document).ready(function(){
 
 			getLocation();
@@ -68,7 +63,7 @@
 
 		function render (json){	
 			var template = _.template($("#pic-template").html());
-			var html = template({posts:json});
+			var html = template(json);
 			$(".content").html(html);
 		}
 
@@ -76,8 +71,12 @@
 
 	<script id="pic-template" type="text/template">
 	
+		<% _.each(statuses, function(status){ %>
+			<div class="tweet" href="#"><%= status.text %></div>
+		<% }); %>
+
 		<% _.each(posts, function(post){ %>
-			<a href="<%= post.link %>"><img src="<%= post.images.low_resolution.url %>"/></a>
+			<a class="post" href="<%= post.link %>"><img src="<%= post.images.low_resolution.url %>"/></a>
 		<% }); %>
 
 	</script>
