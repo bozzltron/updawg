@@ -6,6 +6,7 @@ var Instagram = require('instagram-node-lib'),
 	http = require('http'),
 	url = require('url'),
 	fs = require('fs'),
+	zlib = require('zlib'),
 	port = process.env.PORT || 3000;
 
 	// Instagram
@@ -31,18 +32,23 @@ var Twitter = new Twit({
 http.createServer(function (req, res) {
 
 	var queryData = url.parse(req.url, true);
+	//res.setEncoding('utf8');
 
 	// return the index file
   	if(queryData.pathname == '/') {
 
   		var index = index = fs.readFileSync('index.html');
   		res.writeHead(200, {'Content-Type': 'text/html'});
-		res.end(index);
+  		res.writeHead(200, {'content-encoding': 'gzip'});
+  		zlib.gzip(new Buffer(index), function(err, gzipped){
+			res.end(gzipped, 'utf8');
+		});
 
 	// ajax search
   	} else if(queryData.pathname == '/search') {
 
   		res.writeHead(200, {'Content-Type': 'application/json'});
+  		res.writeHead(200, {'content-encoding': 'gzip'});
 
   		var now = Math.round((new Date()).getTime() / 1000);
   		var delta = 86400 * 2;
@@ -53,7 +59,10 @@ http.createServer(function (req, res) {
   		function respond() {
   			finished++;
   			if(finished == 2) {
-  				res.end(JSON.stringify(json));
+  				var buffer = new Buffer(JSON.stringify(json));
+  				zlib.gzip(buffer, function(err, gzipped){
+  					res.end(gzipped, 'utf8');
+  				});
   			}
   		}
 
@@ -91,7 +100,10 @@ http.createServer(function (req, res) {
 	  			extension = queryData.pathname.split('.')[1];
 
 	  		res.writeHead(200, {'Content-Type': mimetypes[extension] });
-			res.end(file);
+	  		res.writeHead(200, {'content-encoding': 'gzip'});
+	  		zlib.gzip(new Buffer(file), function(err, gzipped){
+				res.end(gzipped, 'utf8');
+			});
 
 		}
   	}
