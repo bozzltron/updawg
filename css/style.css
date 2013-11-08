@@ -23,7 +23,7 @@ fieldset {
 }
 
 img{
-	margin:5px;
+
 }
 
 .field-wrap {
@@ -37,12 +37,21 @@ img{
 	opacity:0.7;
 }
 
-.tweet {
-	width:294px;
-	height:100px;
-	padding:5px;
-	margin:5px;
+.post, .tweet { 
+	margin:5px; 
 	display:inline-block;
-	border:1px solid #ccc;
+}
+
+.post{
+
+}
+
+.tweet {
+	width:306px;
+	height:306px;
 	vertical-align: top;
+}
+
+.tweet img {
+	width:100%;
 }

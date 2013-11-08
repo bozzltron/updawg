@@ -76,7 +76,13 @@
 		<% }); %>
 
 		<% _.each(statuses, function(status){ %>
-			<div class="tweet" href="#"><%= status.text %></div>
+
+			<% if(status.entities && status.entities.media) { %>
+				<% 	_.each(status.entities.media, function(media) { %>
+						<a class="tweet" href="<%= media.expanded_url %>"><img src="<%= media.media_url %>"/></a>
+			    <% }); %>
+			<% } %>
+
 		<% }); %>		
 
 	</script>
