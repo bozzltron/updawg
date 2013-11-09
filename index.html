@@ -71,19 +71,12 @@
 
 	<script id="pic-template" type="text/template">
 
-		<% _.each(posts, function(post){ %>
-			<a class="post" href="<%= post.link %>"><img src="<%= post.images.low_resolution.url %>"/></a>
-		<% }); %>
 
-		<% _.each(statuses, function(status){ %>
-
-			<% if(status.entities && status.entities.media) { %>
-				<% 	_.each(status.entities.media, function(media) { %>
-						<a class="tweet" href="<%= media.expanded_url %>"><img src="<%= media.media_url %>"/></a>
-			    <% }); %>
+		<% _.each(items, function(post){ %>
+			<% if ( post.media ) { %>
+				<a class="post" href="<%= post.url %>"><img src="<%= post.media %>"/></a>
 			<% } %>
-
-		<% }); %>		
+		<% }); %>	
 
 	</script>
 

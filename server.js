@@ -7,7 +7,10 @@ var Instagram = require('instagram-node-lib'),
 	url = require('url'),
 	fs = require('fs'),
 	zlib = require('zlib'),
-	port = process.env.PORT || 3000;
+	port = process.env.PORT || 3000,
+	DataTransform = require("./server/data-transform").DataTransform,
+	DataMap = require("./server/map.json"),
+	_ = require("underscore");
 
 	// Instagram
 	// CLIENT ID	6cb56ab8349f4f719e7865d0f6429946
@@ -59,7 +62,8 @@ http.createServer(function (req, res) {
   		function respond() {
   			finished++;
   			if(finished == 2) {
-  				var buffer = new Buffer(JSON.stringify(json));
+  				json = _.sortBy(json, function(item){  return item.timestamp; });
+  				var buffer = new Buffer(JSON.stringify({items:json}));
   				zlib.gzip(buffer, function(err, gzipped){
   					res.end(gzipped, 'utf8');
   				});
@@ -73,18 +77,18 @@ http.createServer(function (req, res) {
 	  		max_timestamp: now,
 	  		min_timestamp: later,
 	  		complete:function(data, pagination){
-	  			json.posts = data;
+	  			_.extend(json, DataTransform(data, DataMap.instagram).transform());
 	  			respond();
   			}
   		});
 
 		// Twitter search
-		Twitter.get('search/tweets', {q: 'geocode:'+queryData.query.lat + ',' + queryData.query.long + ',1km'}, function(err, reply) {
-			json.statuses = reply.statuses;
+		Twitter.get('search/tweets', {q: 'geocode:' + queryData.query.lat + ',' + queryData.query.long + ',1km'}, function(err, reply) {
+			//console.log(reply);
+			//json.statuses = reply.statuses;
+			_.extend(json, DataTransform(reply, DataMap.twitter).transform());
   			respond();
 		});
-
-
 
 	// basic file server 
   	} else {
