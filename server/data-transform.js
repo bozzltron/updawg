@@ -7,17 +7,17 @@ exports.DataTransform = function(data, map){
 	return {
 
 		getValue : function(obj, key) {
-
+		
 			var value = obj || data,
 				key = key || map.list,
 				keys = key.split('.');
-				
+			
 			if(key == '') {
 				return obj;
 			}
 
 			for(var i = 0; i < keys.length; i++ ) {
-				if(typeof(value[keys[i]]) !== "undefined") {
+				if(typeof(value) !== "undefined" && typeof(value[keys[i]]) !== "undefined") {
 					value = value[keys[i]];
 				} else {
 					return null;
@@ -29,12 +29,15 @@ exports.DataTransform = function(data, map){
 		},
 
 		transform : function() {
+
 			var normalized = _.map(this.getValue(data, map.list), _.bind(this.iterator, this));
 			normalized = this.operate(normalized);
 		    return normalized;
+
 		},
 
 		operate: function(data) {
+
 			_.each(map.operate, function(method){
 				data = _.map(data, function(item){
 					var fn = eval(method.run);
@@ -42,16 +45,18 @@ exports.DataTransform = function(data, map){
 					return item;
 				});
 			});
-
 			return data;
+
 		},
 
 		iterator : function(item) {
+
 			var obj = {};
 			_.each(map.item, _.bind(function(oldkey, newkey) {
 				obj[newkey] = this.getValue(item, oldkey);
 			}, this));
 			return obj;
+			
 		}
 
 	};
