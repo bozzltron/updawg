@@ -28,7 +28,7 @@ var Twitter = new Twit({
 });
 
 exports.search = function(query, cb){
-
+    console.log('search');
 	var now = Math.round((new Date()).getTime() / 1000);
 	var delta = 86400 * 2;
 	var later = now - delta;
@@ -38,7 +38,11 @@ exports.search = function(query, cb){
 	function respond() {
 		finished++;
 		if(finished == 2 && typeof(cb) == "function") {
-			cb(json);
+			console.log("sort");
+			var sorted = _.sortBy(json, function(item){
+				return item.timestamp;
+			});
+			cb(sorted);
 		}
 	}
 
@@ -49,14 +53,20 @@ exports.search = function(query, cb){
   		max_timestamp: now,
   		min_timestamp: later,
   		complete:function(data, pagination){
-  			json = _.extend(json, DataTransform(data, DataMap.instagram).transform());
+  			var tagged = DataTransform(data, DataMap.instagram).transform();
+  			_.each(tagged, function(item){ item.type = "instagram";  });
+  			json = _.extend(json, tagged);
   			respond();
 		}
 	});
 
 	// Twitter search
 	Twitter.get('search/tweets', { q: 'geocode:' + query.lat + ',' + query.long + ',1km' }, function(err, reply) {
-		json = _.extend(json, DataTransform(reply, DataMap.twitter).transform());
+		console.log("done twitter");
+		var tagged = DataTransform(reply, DataMap.twitter).transform();
+		_.each(tagged, function(item){ item.type = "twitter";  });
+		json = _.extend(json, tagged);
+
 		respond();
 	});
 

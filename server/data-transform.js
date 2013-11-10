@@ -12,6 +12,11 @@ exports.DataTransform = function(data, map){
 				key = key || map.list,
 				keys = key.split('.');
 			
+			if(typeof(obj) == "undefined") {
+				console.log("WWWWPPPPP");
+				return "";
+			}
+
 			if(key == '') {
 				return obj;
 			}
@@ -30,8 +35,12 @@ exports.DataTransform = function(data, map){
 
 		transform : function() {
 
-			var normalized = _.map(this.getValue(data, map.list), _.bind(this.iterator, this));
-			normalized = this.operate(normalized);
+			var value = this.getValue(data, map.list),
+			    normalized = {};
+			if(value) {
+				var normalized = _.map(this.getValue(data, map.list), _.bind(this.iterator, this));
+				normalized = this.operate(normalized);
+			}
 		    return normalized;
 
 		},
@@ -53,10 +62,11 @@ exports.DataTransform = function(data, map){
 
 			var obj = {};
 			_.each(map.item, _.bind(function(oldkey, newkey) {
+				console.log( "newkey", newkey, "oldkey", oldkey);
 				obj[newkey] = this.getValue(item, oldkey);
 			}, this));
 			return obj;
-			
+
 		}
 
 	};

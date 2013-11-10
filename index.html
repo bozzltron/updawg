@@ -4,6 +4,7 @@
 <head>
   <title>smells like updawg</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" />
 </head>
 
 <body>
@@ -34,7 +35,6 @@
 		$(document).ready(function(){
 
 			getLocation();
-			getData();
 
 			$('.gllpLatlonPicker').on('location_changed', function(event, data) {
 				getData();
@@ -55,6 +55,7 @@
 		}		
 
 		function getData() {
+			$('.content').empty().text("Loading...");
 			$.getJSON('/search', {
 				lat: $('.gllpLatitude').val(),
 				long: $('.gllpLongitude').val()
@@ -74,7 +75,14 @@
 
 		<% _.each(items, function(post){ %>
 			<% if ( post.media ) { %>
-				<a class="post" href="<%= post.url %>"><img src="<%= post.media %>"/></a>
+				<a class="post" href="<%= post.url %>">
+					<img src="<%= post.media %>"/>
+					<% if(post.type == "instagram") { %>
+						<i class="fa fa-instagram"></i>
+					<% } else if(post.type == "twitter") { %>
+						<i class="fa fa-twitter"></i>
+					<% } %>
+				</a>
 			<% } %>
 		<% }); %>	
 

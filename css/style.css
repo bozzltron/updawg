@@ -43,8 +43,15 @@ img{
 	width:306px;
 	height:306px;
 	vertical-align: top;
+	position:relative;
 }
 
 .post img {
 	width:100%;
+}
+
+.post i {
+	position:absolute;
+	bottom:10px;
+	right:10px;
 }

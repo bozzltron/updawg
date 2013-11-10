@@ -14,30 +14,31 @@ var Instagram = require('instagram-node-lib'),
 http.createServer(function (req, res) {
 
 	var queryData = url.parse(req.url, true);
-	//res.setEncoding('utf8');
+
+	function send(options) {
+		var options = options || {
+			contentType:"text/html",
+			content:""
+		};
+  		res.writeHead(200, {'Content-Type': options.contentType});
+  		res.writeHead(200, {'content-encoding': 'gzip'});
+  		zlib.gzip(new Buffer(options.content), function(err, gzipped){
+			res.end(gzipped, 'utf8');
+		});		
+	}
 
 	// return the index file
   	if(queryData.pathname == '/') {
 
   		var index = index = fs.readFileSync('index.html');
-  		res.writeHead(200, {'Content-Type': 'text/html'});
-  		res.writeHead(200, {'content-encoding': 'gzip'});
-  		zlib.gzip(new Buffer(index), function(err, gzipped){
-			res.end(gzipped, 'utf8');
-		});
+  		send({content:index});
 
 	// ajax search
   	} else if(queryData.pathname == '/search') {
 
-  		res.writeHead(200, {'Content-Type': 'application/json'});
-  		res.writeHead(200, {'content-encoding': 'gzip'});
-
   		search(queryData.query, function(json){
-  			console.log("search", json);
-			var buffer = new Buffer(JSON.stringify({items:json}));
-			zlib.gzip(buffer, function(err, gzipped){
-				res.end(gzipped, 'utf8');
-			});
+			var content = JSON.stringify({items:json});
+			send({content:content, contentType:'application/json'});
   		});
 
 	// basic file server 
@@ -53,12 +54,7 @@ http.createServer(function (req, res) {
 		  		},
 	  			extension = queryData.pathname.split('.')[1];
 
-	  		res.writeHead(200, {'Content-Type': mimetypes[extension] });
-	  		res.writeHead(200, {'content-encoding': 'gzip'});
-	  		zlib.gzip(new Buffer(file), function(err, gzipped){
-				res.end(gzipped, 'utf8');
-			});
-
+	  		send({content:file, contentType:mimetypes[extension]})
 		}
   	}
 
