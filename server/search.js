@@ -5,7 +5,8 @@ var Instagram = require('instagram-node-lib'),
 	Twit = require('twit'),
 	DataTransform = require("./data-transform").DataTransform,
 	DataMap = require("./map.json"),
-	_ = require("underscore");
+	_ = require("underscore"),
+	async = require("async");
 
 	// Instagram
 	// CLIENT ID	6cb56ab8349f4f719e7865d0f6429946
@@ -28,12 +29,12 @@ var Twitter = new Twit({
 });
 
 exports.search = function(query, cb){
-    console.log('search');
+
 	var now = Math.round((new Date()).getTime() / 1000);
 	var delta = 86400 * 2;
 	var later = now - delta;
 	var finished = 0;
-	var json = {};
+	var json = [];
 
 	function respond() {
 		finished++;
@@ -46,28 +47,63 @@ exports.search = function(query, cb){
 		}
 	}
 
-	// Instagram search
-  	Instagram.media.search({ 
-  		lat: query.lat, 
-  		lng: query.long, 
-  		max_timestamp: now,
-  		min_timestamp: later,
-  		complete:function(data, pagination){
-  			var tagged = DataTransform(data, DataMap.instagram).transform();
-  			_.each(tagged, function(item){ item.type = "instagram";  });
-  			json = _.extend(json, tagged);
-  			respond();
-		}
-	});
+	// Search parallel
+	async.parallel([
+	    function(callback){
 
-	// Twitter search
-	Twitter.get('search/tweets', { q: 'geocode:' + query.lat + ',' + query.long + ',1km' }, function(err, reply) {
-		console.log("done twitter");
-		var tagged = DataTransform(reply, DataMap.twitter).transform();
-		_.each(tagged, function(item){ item.type = "twitter";  });
-		json = _.extend(json, tagged);
+	    	// Twitter search
+			Twitter.get('search/tweets', { 
+				q: 'geocode:' + query.lat + ',' + query.long + ',1km' 
+			}, function(err, data){
+				callback(err, data);
+			});
+			//callback(null,{});
+	    
+	    },
+	    function(callback){
+		
+			// Instagram search
+		  	Instagram.media.search({ 
+		  		lat: query.lat, 
+		  		lng: query.long, 
+		  		max_timestamp: now,
+		  		min_timestamp: later,
+		  		complete:function(data, pagination){
+		  			//console.log("Instagram", arguments);
+		  			callback(null, data);
+		  		}
+			});
+	    //callback(null,{});
 
-		respond();
+	    }
+	],
+	// optional callback
+	function(err, results){
+
+	    // the results array will equal ['one','two'] even though
+	    // the second function had a shorter timeout.
+
+	    // Process Twitter
+	    var tagged = DataTransform(results[0], DataMap.twitter).transform();
+		_.each(tagged, function(item){ 
+			item.type = "twitter";  
+			json.push(item);
+		});
+
+		// Process Instagram
+		var tagged = DataTransform(results[1], DataMap.instagram).transform();
+		_.each(tagged, function(item){ 
+			item.type = "instagram";  
+			json.push(item);
+		});
+		
+		// Sort
+		var sorted = _.sortBy(json, function(item){
+			return item.timestamp;
+		});
+
+		// Return
+		cb(sorted);
 	});
 
 };

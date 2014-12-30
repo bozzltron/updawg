@@ -42,7 +42,7 @@ console.log("Begin testing DataTransform");
 
 var dataTransform = DataTransform(data, map);
 
-assert.deepEqual(dataTransform.getValue(), [{
+assert.deepEqual(dataTransform.getValue(data, "posts"), [{
 	title : "title1",
 	description: "description1",
 	blog: "This is a blog.",

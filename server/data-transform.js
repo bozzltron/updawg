@@ -7,13 +7,8 @@ exports.DataTransform = function(data, map){
 	return {
 
 		getValue : function(obj, key) {
-		
-			var value = obj || data,
-				key = key || map.list,
-				keys = key.split('.');
-			
+	
 			if(typeof(obj) == "undefined") {
-				console.log("WWWWPPPPP");
 				return "";
 			}
 
@@ -21,8 +16,13 @@ exports.DataTransform = function(data, map){
 				return obj;
 			}
 
+			var value = obj || data,
+				key = key || map.list,
+				keys = key.split('.');
+
 			for(var i = 0; i < keys.length; i++ ) {
-				if(typeof(value) !== "undefined" && typeof(value[keys[i]]) !== "undefined") {
+				if(typeof(value) !== "undefined" && 
+					value[keys[i]]) {
 					value = value[keys[i]];
 				} else {
 					return null;
@@ -62,7 +62,6 @@ exports.DataTransform = function(data, map){
 
 			var obj = {};
 			_.each(map.item, _.bind(function(oldkey, newkey) {
-				console.log( "newkey", newkey, "oldkey", oldkey);
 				obj[newkey] = this.getValue(item, oldkey);
 			}, this));
 			return obj;

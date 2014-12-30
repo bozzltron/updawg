@@ -35,7 +35,8 @@ http.createServer(function (req, res) {
 
 	// ajax search
   	} else if(queryData.pathname == '/search') {
-
+  		console.log("searching for ");
+  		console.log(JSON.stringify(queryData.query));
   		search(queryData.query, function(json){
 			var content = JSON.stringify({items:json});
 			send({content:content, contentType:'application/json'});
@@ -59,4 +60,4 @@ http.createServer(function (req, res) {
   	}
 
 }).listen(port);
-console.log("Smells like updawg!");
+console.log("Smells like updawg! on port " + port);
