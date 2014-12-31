@@ -51,11 +51,11 @@
 	                <form>
 		                <div class="form-group">
     						<label>Latitude</label>
-		                	<input type="text" class="form-control gllpLatitude" value="20" />
+		                	<input type="text" class="form-control gllpLatitude"  />
 		                </div>
 		                <div class="form-group">
     						<label>Longitude</label>
-		                	<input type="text" class="form-control gllpLongitude" value="20" />
+		                	<input type="text" class="form-control gllpLongitude" />
 		                </div>
 		                <div class="form-group">
     						<label>Zoom</label>
@@ -89,12 +89,12 @@
     <script src="/js/jquery.wookmark.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-
-        getLocation();
-
+        
         $('.gllpLatlonPicker').on('location_changed', function(event, data) {
             getData();
         });
+
+        getLocation();
 
     });
 
@@ -105,9 +105,12 @@
     }
 
     function showPosition(position) {
-        $('.gllpLatitude').val(position.coords.latitude);
-        $('.gllpLongitude').val(position.coords.longitude);
-        $('.gllpUpdateButton').click();
+
+    	$.getJSON('/search', {
+            lat: position.coords.latitude,
+            long: position.coords.longitude
+        }, render);
+        
     }
 
     function getData() {
