@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>What's Up Dawg?</title>
+    <title>What's up dawg?</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
@@ -34,21 +34,44 @@
     <div>
 
         <div class="collapse" id="map">
-            <fieldset class="gllpLatlonPicker">
-                <div class="gllpMap">Google Maps</div>
-                <div class="field-wrap">
-                    <input type="text" class="gllpSearchField">
-                    <input type="button" class="gllpSearchButton" value="search"> lat:
-                    <input type="text" class="gllpLatitude" value="20" /> long:
-                    <input type="text" class="gllpLongitude" value="20" /> zoom:
-                    <input type="text" class="gllpZoom" value="3" />
-                    <input type="button" class="gllpUpdateButton" value="update map">
-                </div>
-            </fieldset>
+        	<div class="row">
+        		<div class="col-md-4">
+		        	<form class="form-inline">
+		        		<div class="form-group">
+		                	<input type="text" placeholder="Search for a place" class="form-control gllpSearchField" />
+	                	</div>
+	                	<div class="form-group">
+		                	<input type="button" class="gllpSearchButton btn btn-primary" value="search"/>
+		                </div>
+	                </form>
+	                <form>
+		                <div class="form-group">
+    						<label>Latitude</label>
+		                	<input type="text" class="form-control gllpLatitude" value="20" />
+		                </div>
+		                <div class="form-group">
+    						<label>Longitude</label>
+		                	<input type="text" class="form-control gllpLongitude" value="20" />
+		                </div>
+		                <div class="form-group">
+    						<label>Zoom</label>
+		                	<input type="text" class="form-control gllpZoom" value="3" />
+		                </div>
+		                <div class="form-group">
+		                	<input type="button" class="gllpUpdateButton btn btn-default" value="update map">
+		                </div>
+		            </form>
+        		</div>
+        		<div class="col-md-8">
+		            <fieldset class="gllpLatlonPicker">
+		                <div class="gllpMap">Google Maps</div>
+		            </fieldset>
+            	</div>
+            </div>
         </div>
 
         <div class="content">
-            Loading...
+            <i class="fa fa-cog fa-spin"></i> Seeing what's up...
         </div>
 
     </div>
@@ -84,7 +107,7 @@
     }
 
     function getData() {
-        $('.content').empty().text("Loading...");
+        $('.content').empty().html("<i class='fa fa-cog fa-spin'></i>Seeing what's up...");
         $.getJSON('/search', {
             lat: $('.gllpLatitude').val(),
             long: $('.gllpLongitude').val()
@@ -95,23 +118,23 @@
         var template = _.template($("#pic-template").html());
         var html = template(json);
         $(".content").html(html);
-		// $('.box').wookmark({
-		//   align: 'center',
-		//   autoResize: false,
-		//   comparator: null,
-		//   container: $('body'),
-		//   direction: undefined,
-		//   ignoreInactiveItems: true,
-		//   itemWidth: 0,
-		//   fillEmptySpace: false,
-		//   flexibleWidth: 0,
-		//   offset: 2,
-		//   onLayoutChanged: undefined,
-		//   outerOffset: 0,
-		//   possibleFilters: [],
-		//   resizeDelay: 50,
-		//   verticalOffset: undefined
-		// });
+		$('.thing').wookmark({
+		  align: 'center',
+		  autoResize: true,
+		  comparator: null,
+		  container: $('.content'),
+		  direction: "left",
+		  ignoreInactiveItems: true,
+		  itemWidth: 300,
+		  fillEmptySpace: false,
+		  flexibleWidth: true,
+		  offset: 2,
+		  onLayoutChanged: undefined,
+		  outerOffset: 10,
+		  possibleFilters: [],
+		  resizeDelay: 50,
+		  verticalOffset: 0
+		});
     }
     </script>
 
@@ -120,33 +143,23 @@
 
         <% _.each(items, function(post, index){ %>
            
-           		<% if(index == 0) { %> <div class="row"> <% } %> 
-
-           		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-
-	                <div class="box">
-	                	<div class="box-icon">
-							<img src="<%= post.media %>"/>
-						</div>
-						<div class="info">
-							<p><%= post.text %></p>
-							<a href="<%= post.url %>" class="btn">
-							<% if(post.type == "instagram") { %>
-								<i class="fa fa-instagram"></i>
-							<% } else if(post.type == "twitter") { %>
-								<i class="fa fa-twitter"></i>
-							<% } %>
-							Link
-							</a>
-						</div>
+                <div class="thing">
+              
+					<img class="img-responsive"  src="<%= post.media %>"/>
+					
+					<div class="info">
+						<p><%= post.text %></p>
+						<a href="<%= post.url %>" class="btn btn-primary">
+						<% if(post.type == "instagram") { %>
+							<i class="fa fa-instagram"></i>
+						<% } else if(post.type == "twitter") { %>
+							<i class="fa fa-twitter"></i>
+						<% } %>
+						View
+						</a>
 					</div>
-
 				</div>
 
-				<% if(index != 0 && index%4 == 0) { %> </div> <div class="row"><% } %> 
-
-				<% if(index == items.length) { %> </div> <% } %>
-        
         <% }); %>
 
     </script>

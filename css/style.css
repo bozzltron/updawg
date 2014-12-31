@@ -13,17 +13,30 @@ fieldset {
 	position: relative;
 }
 
-.gllpMap { 
+.navbar {
+	margin-bottom:0;
+}
+
+.gllpMap {
 	width: 100%; 
-	height: 250px; 
+	height: 350px; 
 }
 
 .content {
 	padding:5px;
+	position: relative;
 }
 
 img{
 
+}
+
+form {
+	padding:15px 10px;
+}
+
+.location-controls {
+	width:500px;
 }
 
 .field-wrap {
@@ -107,4 +120,13 @@ img{
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
     transition: all 0.5s ease 0s;
+}
+
+.thing {
+	border:1px solid #ccc;
+	padding:3px;
+}
+
+.thing .info {
+	padding:10px;
 }
