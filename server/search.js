@@ -3,7 +3,7 @@
 
 var Instagram = require('instagram-node-lib'),
 	Twit = require('twit'),
-	DataTransform = require("./data-transform").DataTransform,
+	DataTransform = require("node-json-transform").DataTransform,
 	DataMap = require("./map.json"),
 	_ = require("underscore"),
 	async = require("async");

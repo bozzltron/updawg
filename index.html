@@ -2,91 +2,154 @@
 <html>
 
 <head>
-  <title>smells like updawg</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <title>What's Up Dawg?</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"> -->
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+
 </head>
 
 <body>
 
-	<fieldset class="gllpLatlonPicker">
-		<div class="gllpMap">Google Maps</div>
-		<div class="field-wrap">
-			<input type="text" class="gllpSearchField">
-			<input type="button" class="gllpSearchButton" value="search">		
-			lat: <input type="text" class="gllpLatitude" value="20"/>
-			long: <input type="text" class="gllpLongitude" value="20"/>
-			zoom: <input type="text" class="gllpZoom" value="3"/>
-			<input type="button" class="gllpUpdateButton" value="update map">
-		</div>
-	</fieldset>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+		        What's happening around you?
+		      </a>
+                <div class="pull-right">
+                    <button class="btn btn-primary navbar-btn" type="button" data-toggle="collapse" data-target="#map" aria-expanded="false" aria-controls="map">
+                        Somewhere else?
+                    </button> 
+                </div>
+            </div>
+        </div>
+    </nav>
 
-	<div class="content">
-		Loading...
-	</div>
+    <div>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
-	<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-	<script src="/js/jquery-gmaps-picker.js"></script>
-	<script type="text/javascript">
+        <div class="collapse" id="map">
+            <fieldset class="gllpLatlonPicker">
+                <div class="gllpMap">Google Maps</div>
+                <div class="field-wrap">
+                    <input type="text" class="gllpSearchField">
+                    <input type="button" class="gllpSearchButton" value="search"> lat:
+                    <input type="text" class="gllpLatitude" value="20" /> long:
+                    <input type="text" class="gllpLongitude" value="20" /> zoom:
+                    <input type="text" class="gllpZoom" value="3" />
+                    <input type="button" class="gllpUpdateButton" value="update map">
+                </div>
+            </fieldset>
+        </div>
 
-		$(document).ready(function(){
+        <div class="content">
+            Loading...
+        </div>
 
-			getLocation();
+    </div>
 
-			$('.gllpLatlonPicker').on('location_changed', function(event, data) {
-				getData();
-			});
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="/js/jquery-gmaps-picker.js"></script>
+    <script src="/js/jquery.wookmark.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
 
-		});
+        getLocation();
 
-		function getLocation() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(showPosition);
-			} 
-		}
+        $('.gllpLatlonPicker').on('location_changed', function(event, data) {
+            getData();
+        });
 
-		function showPosition(position) {
-			$('.gllpLatitude').val(position.coords.latitude);
-			$('.gllpLongitude').val(position.coords.longitude);
-			$('.gllpUpdateButton').click();
-		}		
+    });
 
-		function getData() {
-			$('.content').empty().text("Loading...");
-			$.getJSON('/search', {
-				lat: $('.gllpLatitude').val(),
-				long: $('.gllpLongitude').val()
-			}, render);
-		}
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+    }
 
-		function render (json){	
-			var template = _.template($("#pic-template").html());
-			var html = template(json);
-			$(".content").html(html);
-		}
+    function showPosition(position) {
+        $('.gllpLatitude').val(position.coords.latitude);
+        $('.gllpLongitude').val(position.coords.longitude);
+        $('.gllpUpdateButton').click();
+    }
 
-	</script>
+    function getData() {
+        $('.content').empty().text("Loading...");
+        $.getJSON('/search', {
+            lat: $('.gllpLatitude').val(),
+            long: $('.gllpLongitude').val()
+        }, render);
+    }
 
-	<script id="pic-template" type="text/template">
+    function render(json) {
+        var template = _.template($("#pic-template").html());
+        var html = template(json);
+        $(".content").html(html);
+		// $('.box').wookmark({
+		//   align: 'center',
+		//   autoResize: false,
+		//   comparator: null,
+		//   container: $('body'),
+		//   direction: undefined,
+		//   ignoreInactiveItems: true,
+		//   itemWidth: 0,
+		//   fillEmptySpace: false,
+		//   flexibleWidth: 0,
+		//   offset: 2,
+		//   onLayoutChanged: undefined,
+		//   outerOffset: 0,
+		//   possibleFilters: [],
+		//   resizeDelay: 50,
+		//   verticalOffset: undefined
+		// });
+    }
+    </script>
+
+    <script id="pic-template" type="text/template">
 
 
-		<% _.each(items, function(post){ %>
-			<% if ( post.media ) { %>
-				<a class="post" href="<%= post.url %>">
-					<img src="<%= post.media %>"/>
-					<% if(post.type == "instagram") { %>
-						<i class="fa fa-instagram"></i>
-					<% } else if(post.type == "twitter") { %>
-						<i class="fa fa-twitter"></i>
-					<% } %>
-				</a>
-			<% } %>
-		<% }); %>	
+        <% _.each(items, function(post, index){ %>
+           
+           		<% if(index == 0) { %> <div class="row"> <% } %> 
 
-	</script>
+           		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+	                <div class="box">
+	                	<div class="box-icon">
+							<img src="<%= post.media %>"/>
+						</div>
+						<div class="info">
+							<p><%= post.text %></p>
+							<a href="<%= post.url %>" class="btn">
+							<% if(post.type == "instagram") { %>
+								<i class="fa fa-instagram"></i>
+							<% } else if(post.type == "twitter") { %>
+								<i class="fa fa-twitter"></i>
+							<% } %>
+							Link
+							</a>
+						</div>
+					</div>
+
+				</div>
+
+				<% if(index != 0 && index%4 == 0) { %> </div> <div class="row"><% } %> 
+
+				<% if(index == items.length) { %> </div> <% } %>
+        
+        <% }); %>
+
+    </script>
 
 </body>
 
