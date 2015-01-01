@@ -8,14 +8,24 @@ var Instagram = require('instagram-node-lib'),
 	_ = require("underscore"),
 	async = require("async");
 
-Instagram.set('client_id', process.env.INSTAGRAM_CLIENT_ID);
-Instagram.set('client_secret', process.env.INSTAGRAM_CLIENT_SECRET);
-console.log("check",  process.env.INSTAGRAM_CLIENT_ID)
+	// Instagram
+	// CLIENT ID	6cb56ab8349f4f719e7865d0f6429946
+	// CLIENT SECRET	b0413f9089a749cc858d3187b026487a
+	// WEBSITE URL	https://www.balancedscale.com
+	// REDIRECT URI	http://www.balancedscale.com/instagram
+
+	// Twitter 
+	// Consumer key	faS1RUZsEwW9T7S4OM5BUw
+	// Consumer secret	dcT0wa1BCuxyg66QOb7HpMePKrX2KuRQtjPjTbjH4
+
+Instagram.set('client_id', '6cb56ab8349f4f719e7865d0f6429946');
+Instagram.set('client_secret', 'b0413f9089a749cc858d3187b026487a');
+
 var Twitter = new Twit({
-    consumer_key:         process.env.TWITTER_CONSUMER_KEY
-  , consumer_secret:      process.env.TWITTER_CONSUMER_SECRET
-  , access_token:         process.env.TWITTER_ACCESS_TOKEN
-  , access_token_secret:  process.env.TWITTER_TOKEN_SECRET
+    consumer_key:         'faS1RUZsEwW9T7S4OM5BUw'
+  , consumer_secret:      'dcT0wa1BCuxyg66QOb7HpMePKrX2KuRQtjPjTbjH4'
+  , access_token:         '15933181-crJlx7JOjunRcthjxXtfRJW05e5ex3YjRI6SZmLd2'
+  , access_token_secret:  'hyvzzOpwBMmHnEy94qom5Sie3BHhEWXmcne3FQ8gT7sKB'
 });
 
 exports.search = function(query, cb){

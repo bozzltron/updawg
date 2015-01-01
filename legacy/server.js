@@ -14,12 +14,13 @@ var Instagram = require('instagram-node-lib'),
 http.createServer(function (req, res) {
 
 	var queryData = url.parse(req.url, true);
-
+	console.log("pathname", queryData.pathname);
 	function send(options) {
 		var options = options || {
 			contentType:"text/html",
 			content:""
 		};
+		console.log(options);
   		res.writeHead(200, {'Content-Type': options.contentType});
   		res.writeHead(200, {'content-encoding': 'gzip'});
   		zlib.gzip(new Buffer(options.content), function(err, gzipped){

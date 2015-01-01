@@ -1,0 +1,21 @@
+
+<% _.each(items, function(post, index){ %>
+   
+        <div class="thing">
+      
+			<img class="img-responsive"  src="<%= post.media %>"/>
+			
+			<div class="info">
+				<p><%= post.text %></p>
+				<a href="<%= post.url %>" class="btn btn-primary">
+				<% if(post.type == "instagram") { %>
+					<i class="fa fa-instagram"></i>
+				<% } else if(post.type == "twitter") { %>
+					<i class="fa fa-twitter"></i>
+				<% } %>
+				View
+				</a>
+			</div>
+		</div>
+
+<% }); %>

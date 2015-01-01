@@ -1,0 +1,27 @@
+{
+	"twitter": {
+		"list": "statuses",
+		"item": {
+			"text" : "text",
+			"url": "entities.media.0.expanded_url",
+			"media": "entities.media.0.media_url",
+			"timestamp": "created_at"
+		},
+		"operate": [
+			{ "run": "Date.parse", "on": "timestamp"}
+		]
+	},
+
+	"instagram": {
+		"list": "",
+		"item": {
+			"text" : "caption.text",
+			"url": "link",
+			"media": "images.low_resolution.url",
+			"timestamp": "caption.created_time"
+		},
+		"operate": [
+			{ "run": "parseInt", "on": "timestamp"}
+		]		
+	}
+}
