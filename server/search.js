@@ -20,80 +20,85 @@ var Twitter = new Twit({
 
 exports.search = function(query, cb){
 
+	console.log("query", query);
+
 	var now = Math.round((new Date()).getTime() / 1000);
 	var delta = 86400 * 2;
 	var later = now - delta;
 	var finished = 0;
 	var json = [];
 
-	function respond() {
-		finished++;
-		if(finished == 2 && typeof(cb) == "function") {
-			console.log("sort");
+	if(query.lat == "" || query.long == "") {
+
+		cb([]);
+	
+	} else {
+
+		console.log("searching...");
+		// Search parallel
+		async.parallel([
+		    function(callback){
+
+		    	// Twitter search
+				Twitter.get('search/tweets', { 
+					q: 'geocode:' + query.lat + ',' + query.long + ',1km' 
+				}, function(err, data){
+					if(err) {
+						console.log("Twitter Error: ", err);
+					}
+					callback(err, data);
+				});
+				//callback(null,{});
+		    
+		    },
+		    function(callback){
+			
+				// Instagram search
+			  	Instagram.media.search({ 
+			  		lat: query.lat, 
+			  		lng: query.long, 
+			  		max_timestamp: now,
+			  		min_timestamp: later,
+			  		complete:function(data, pagination){
+			  			//console.log("Instagram", arguments);
+			  			callback(null, data);
+			  		}
+				});
+		    //callback(null,{});
+
+		    }
+		],
+		// optional callback
+		function(err, results){
+
+		    // the results array will equal ['one','two'] even though
+		    // the second function had a shorter timeout.
+		    console.log("results", results);
+
+		    // Process Twitter
+		    var tagged = DataTransform(results[0], DataMap.twitter).transform();
+			_.each(tagged, function(item){ 
+				item.type = "twitter";  
+				json.push(item);
+			});
+
+			// Process Instagram
+			var tagged = DataTransform(results[1], DataMap.instagram).transform();
+			_.each(tagged, function(item){ 
+				item.type = "instagram";  
+				json.push(item);
+			});
+			
+			// Sort
 			var sorted = _.sortBy(json, function(item){
 				return item.timestamp;
 			});
+
+			console.log("sorted", sorted);
+			// Return
 			cb(sorted);
-		}
+		});
+
 	}
-
-	// Search parallel
-	async.parallel([
-	    function(callback){
-
-	    	// Twitter search
-			Twitter.get('search/tweets', { 
-				q: 'geocode:' + query.lat + ',' + query.long + ',1km' 
-			}, function(err, data){
-				callback(err, data);
-			});
-			//callback(null,{});
-	    
-	    },
-	    function(callback){
-		
-			// Instagram search
-		  	Instagram.media.search({ 
-		  		lat: query.lat, 
-		  		lng: query.long, 
-		  		max_timestamp: now,
-		  		min_timestamp: later,
-		  		complete:function(data, pagination){
-		  			//console.log("Instagram", arguments);
-		  			callback(null, data);
-		  		}
-			});
-	    //callback(null,{});
-
-	    }
-	],
-	// optional callback
-	function(err, results){
-
-	    // the results array will equal ['one','two'] even though
-	    // the second function had a shorter timeout.
-
-	    // Process Twitter
-	    var tagged = DataTransform(results[0], DataMap.twitter).transform();
-		_.each(tagged, function(item){ 
-			item.type = "twitter";  
-			json.push(item);
-		});
-
-		// Process Instagram
-		var tagged = DataTransform(results[1], DataMap.instagram).transform();
-		_.each(tagged, function(item){ 
-			item.type = "instagram";  
-			json.push(item);
-		});
-		
-		// Sort
-		var sorted = _.sortBy(json, function(item){
-			return item.timestamp;
-		});
-
-		// Return
-		cb(sorted);
-	});
 
 };

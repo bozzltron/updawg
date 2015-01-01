@@ -231,9 +231,28 @@ var GMapsLatLonPicker = (function() {
 });
 
 $(document).ready( function() {
-	$(".gllpLatlonPicker").each(function() {
-		(new GMapsLatLonPicker()).init( $(this) );
-	});
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+		$(".gllpLatlonPicker").each(function() {
+			(new GMapsLatLonPicker()).init( $(this) );
+		});
+    }
+    
+
+    function showPosition(position) {
+
+		$(".gllpLatlonPicker").each(function() {
+			(new GMapsLatLonPicker({
+				defLat:position.coords.latitude,
+				defLng:position.coords.longitude
+			})).init( $(this) );
+		});
+
+    }
+
+
 });
 
 $(document).bind("location_changed", function(event, object) {

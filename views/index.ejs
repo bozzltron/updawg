@@ -35,141 +35,62 @@
         </div>
     </nav>
 
-    <div>
+	<div>
 
-        <div class="collapse" id="map">
-        	<div class="row">
-        		<div class="col-md-4">
-		        	<form class="form-inline">
-		        		<div class="form-group">
-		                	<input type="text" placeholder="Search for a place" class="form-control gllpSearchField" />
-	                	</div>
-	                	<div class="form-group">
-		                	<input type="button" class="gllpSearchButton btn btn-primary" value="search"/>
-		                </div>
-	                </form>
-	                <form class="form-horizontal">
-		                <div class="form-group">
-    						<label class="col-sm-2">Latitude</label>
-    						<div class="col-sm-10">
-		                		<input type="text" class="form-control gllpLatitude"  />
-		                	</div>
-		                </div>
-		                <div class="form-group">
-    						<label class="col-sm-2">Longitude</label>
-    						<div class="col-sm-10">
-		                		<input type="text" class="form-control gllpLongitude" />
-		                	</div>
-		                </div>
-		                <div class="form-group">
-    						<label class="col-sm-2">Zoom</label>
-    						<div class="col-sm-10">
-		                		<input type="text" class="form-control gllpZoom" value="3" />
-		                	</div>
-		                </div>
-		                <div class="form-group">
-		                	<div class="col-sm-offset-2 col-sm-10">
-		                		<input type="button" class="gllpUpdateButton btn btn-default" value="update map">
-		                	</div>
-		                </div>
-		            </form>
-        		</div>
-        		<div class="col-md-8">
-		            <fieldset class="gllpLatlonPicker">
-		                <div class="gllpMap">Google Maps</div>
-		            </fieldset>
+	    <div class="collapse gllpLatlonPicker" id="map">
+        
+        	<form class="form-inline">
+        		<div class="form-group">
+                	<input type="text" placeholder="Search for a place" class="form-control gllpSearchField" />
             	</div>
-            </div>
+            	<div class="form-group">
+                	<input type="button" class="gllpSearchButton btn btn-primary" value="search"/>
+                </div>
+            </form>
+            <form class="form-horizontal">
+                <div class="form-group">
+					<label class="col-sm-2">Latitude</label>
+					<div class="col-sm-10">
+                		<input type="text" class="form-control gllpLatitude"  />
+                	</div>
+                </div>
+                <div class="form-group">
+					<label class="col-sm-2">Longitude</label>
+					<div class="col-sm-10">
+                		<input type="text" class="form-control gllpLongitude" />
+                	</div>
+                </div>
+                <div class="form-group">
+					<label class="col-sm-2">Zoom</label>
+					<div class="col-sm-10">
+                		<input type="text" class="form-control gllpZoom" value="3" />
+                	</div>
+                </div>
+                <div class="form-group">
+                	<div class="col-sm-offset-2 col-sm-10">
+                		<input type="button" class="gllpUpdateButton btn btn-default" value="update map">
+                	</div>
+                </div>
+            </form>
+	
+        	<div class="gllpMap">Google Maps</div>
+            
         </div>
 
         <div class="content">
             <i class="fa fa-cog fa-spin"></i> Seeing what's up...
         </div>
 
+
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJoc9cg2BOqZaHqdllOEUm-zs7PRhOa3E"></script>
     <script src="/js/jquery-gmaps-picker.js"></script>
     <script src="/js/jquery.wookmark.js"></script>
-    <script type="text/javascript">
-
-    $(document).ready(function() {
-        
-        $('#map').on('location_changed', function(event, data) {
-            getData();
-        });
-
-        getLocation();
-
-    });
-
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        }
-    }
-
-    function showPosition(position) {
-
-    	$.getJSON('/search', {
-            lat: position.coords.latitude,
-            long: position.coords.longitude
-        }, getTemplate);
-
-    }
-
-    function getData() {
-        $('.content').empty().html("<i class='fa fa-cog fa-spin'></i>Seeing what's up...");
-        $.getJSON('/search', {
-            lat: $('.gllpLatitude').val(),
-            long: $('.gllpLongitude').val()
-        }, getTemplate);
-    }
-
-    function getTemplate(json) {
-
-    	if(!window.template) {
-	    	$.get('/templates/main.html', function(template){
-	    		window.template = template;
-	    		render(json);
-	    	});   
-    	} else {
-    		render(json);
-    	}
-
-    }
-
-    function render(json) {
-
-        var template = _.template(window.template);
-        var html = template(json);
-        console.log("render", json, html);
-        $(".content").html(html);
-		$('.thing').wookmark({
-		  align: 'center',
-		  autoResize: true,
-		  comparator: null,
-		  container: $('.content'),
-		  direction: "left",
-		  ignoreInactiveItems: true,
-		  itemWidth: 300,
-		  fillEmptySpace: false,
-		  flexibleWidth: true,
-		  offset: 2,
-		  onLayoutChanged: undefined,
-		  outerOffset: 10,
-		  possibleFilters: [],
-		  resizeDelay: 50,
-		  verticalOffset: 0
-		});
-
-    }
-
-    </script>
+    <script src="/js/updawg.js"></script>
 
 
 </body>
