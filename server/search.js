@@ -89,12 +89,13 @@ exports.search = function(query, cb){
 			_.each(tagged, function(item){ 
 				item.type = "instagram"; 
 				item.timeago = moment(item.timestamp, "X").fromNow(); 
+				item.timestamp = parseInt( item.timestamp ) * 1000;
 				json.push(item);
 			});
 			
 			// Sort
 			var sorted = _.sortBy(json, function(item){
-				return item.timestamp;
+				return item.timestamp * -1;
 			});
 
 			console.log("sorted", sorted);
