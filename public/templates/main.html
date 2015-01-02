@@ -7,7 +7,9 @@
 			
 			<div class="info">
 				<p><%= post.text %></p>
-				<a href="<%= post.url %>" class="btn btn-primary">
+				<div>
+				Shared <time><%= post.timeago %></time>
+				<a href="<%= post.url %>">
 				<% if(post.type == "instagram") { %>
 					<i class="fa fa-instagram"></i>
 				<% } else if(post.type == "twitter") { %>
@@ -15,6 +17,7 @@
 				<% } %>
 				View
 				</a>
+				</div>
 			</div>
 		</div>
 

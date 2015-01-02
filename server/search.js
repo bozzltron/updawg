@@ -6,7 +6,8 @@ var Instagram = require('instagram-node-lib'),
 	DataTransform = require("node-json-transform").DataTransform,
 	DataMap = require("./map.json"),
 	_ = require("underscore"),
-	async = require("async");
+	async = require("async"),
+	moment = require("moment");
 
 Instagram.set('client_id', process.env.INSTAGRAM_CLIENT_ID);
 Instagram.set('client_secret', process.env.INSTAGRAM_CLIENT_SECRET);
@@ -79,13 +80,15 @@ exports.search = function(query, cb){
 		    var tagged = DataTransform(results[0], DataMap.twitter).transform();
 			_.each(tagged, function(item){ 
 				item.type = "twitter";  
+				item.timeago = moment(item.timestamp, "x").fromNow();
 				json.push(item);
 			});
 
 			// Process Instagram
 			var tagged = DataTransform(results[1], DataMap.instagram).transform();
 			_.each(tagged, function(item){ 
-				item.type = "instagram";  
+				item.type = "instagram"; 
+				item.timeago = moment(item.timestamp, "X").fromNow(); 
 				json.push(item);
 			});
 			

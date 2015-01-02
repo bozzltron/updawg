@@ -5,6 +5,10 @@ $(document).ready(function() {
         getData();
     });
 
+    $(".navbar-btn").click(function(){
+    	$(".container-main").toggleClass("show");
+    });
+
     getLocation();
 
 });
@@ -58,10 +62,10 @@ function render(json) {
 	  container: $('.content'),
 	  direction: "left",
 	  ignoreInactiveItems: true,
-	  itemWidth: 300,
+	  itemWidth: 310,
 	  fillEmptySpace: false,
 	  flexibleWidth: true,
-	  offset: 2,
+	  offset: 10,
 	  onLayoutChanged: undefined,
 	  outerOffset: 10,
 	  possibleFilters: [],
