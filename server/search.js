@@ -121,7 +121,7 @@ exports.search = function(query, cb){
 			
 			// Sort
 			var sorted = _.sortBy(json, function(item){
-				return item.timestamp * -1;
+				return item.distance;
 			});
 
 			console.log("sorted", sorted);
