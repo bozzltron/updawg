@@ -7,8 +7,10 @@
 			
 			<div class="info">
 				<p><%= post.text %></p>
-				<div>
-				Shared <time><%= post.timeago %></time>
+				<p>
+				<%= post.username %>  <br/ >
+				<%= post.distance %> km (<%= post.feet %> ft) away <br />
+				<time><%= post.timeago %></time> <br />
 				<a href="<%= post.url %>">
 				<% if(post.type == "instagram") { %>
 					<i class="fa fa-instagram"></i>
@@ -17,7 +19,7 @@
 				<% } %>
 				View
 				</a>
-				</div>
+				</p>
 			</div>
 		</div>
 

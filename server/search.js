@@ -19,6 +19,25 @@ var Twitter = new Twit({
   , access_token_secret:  process.env.TWITTER_TOKEN_SECRET
 });
 
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  var rounded = (Math.round(d * 10)) / 10;
+  return rounded;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
 exports.search = function(query, cb){
 
 	console.log("query", query);
@@ -77,19 +96,25 @@ exports.search = function(query, cb){
 		    console.log("results", results);
 
 		    // Process Twitter
+		    console.log("twitter", JSON.stringify(results[0].statuses[0]));
 		    var tagged = DataTransform(results[0], DataMap.twitter).transform();
 			_.each(tagged, function(item){ 
 				item.type = "twitter";  
 				item.timeago = moment(item.timestamp, "x").fromNow();
+				item.distance = getDistanceFromLatLonInKm(query.lat, query.long, item.latitude, item.longitude);
+				item.feet = Math.round( (3280.840 * item.distance) / 10) * 10;
 				json.push(item);
 			});
 
 			// Process Instagram
+			console.log("instagram", JSON.stringify(results[1][0]));
 			var tagged = DataTransform(results[1], DataMap.instagram).transform();
 			_.each(tagged, function(item){ 
 				item.type = "instagram"; 
 				item.timeago = moment(item.timestamp, "X").fromNow(); 
 				item.timestamp = parseInt( item.timestamp ) * 1000;
+				item.distance = getDistanceFromLatLonInKm(query.lat, query.long, item.latitude, item.longitude);
+				item.feet = Math.round( (3280.840 * item.distance) / 10) * 10;
 				json.push(item);
 			});
 			

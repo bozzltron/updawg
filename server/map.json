@@ -5,7 +5,10 @@
 			"text" : "text",
 			"url": "entities.media.0.expanded_url",
 			"media": "entities.media.0.media_url",
-			"timestamp": "created_at"
+			"timestamp": "created_at",
+			"latitude": "geo.coordinates.0",
+			"longitude": "geo.coordinates.1",
+			"username": "user.screen_name"
 		},
 		"operate": [
 			{ "run": "Date.parse", "on": "timestamp"}
@@ -18,7 +21,10 @@
 			"text" : "caption.text",
 			"url": "link",
 			"media": "images.low_resolution.url",
-			"timestamp": "caption.created_time"
+			"timestamp": "caption.created_time",
+			"latitude": "location.latitude",
+			"longitude": "location.longitude",
+			"username": "user.username"
 		}
 	}
 }
