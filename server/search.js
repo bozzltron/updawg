@@ -103,6 +103,7 @@ exports.search = function(query, cb){
 				item.timeago = moment(item.timestamp, "x").fromNow();
 				item.distance = getDistanceFromLatLonInKm(query.lat, query.long, item.latitude, item.longitude);
 				item.feet = Math.round( (3280.840 * item.distance) / 10) * 10;
+				item.url = "https://twitter.com/" + item.username + "/status/" + item.url;
 				json.push(item);
 			});
 

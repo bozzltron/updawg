@@ -3,7 +3,7 @@
 		"list": "statuses",
 		"item": {
 			"text" : "text",
-			"url": "entities.media.0.expanded_url",
+			"url": "id_str",
 			"media": "entities.media.0.media_url",
 			"timestamp": "created_at",
 			"latitude": "geo.coordinates.0",
