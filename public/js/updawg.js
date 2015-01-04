@@ -55,22 +55,22 @@ function render(json) {
     var html = template(json);
     
     $(".content").html(html);
-	$('.thing').wookmark({
-	  align: 'center',
-	  autoResize: true,
-	  comparator: null,
-	  container: $('.content'),
-	  direction: "left",
-	  ignoreInactiveItems: true,
-	  itemWidth: 310,
-	  fillEmptySpace: false,
-	  flexibleWidth: true,
-	  offset: 10,
-	  onLayoutChanged: undefined,
-	  outerOffset: 10,
-	  possibleFilters: [],
-	  resizeDelay: 50,
-	  verticalOffset: 0
-	});
+	// $('.thing').wookmark({
+	//   align: 'center',
+	//   autoResize: true,
+	//   comparator: null,
+	//   container: $('.content'),
+	//   direction: "left",
+	//   ignoreInactiveItems: true,
+	//   itemWidth: 310,
+	//   fillEmptySpace: false,
+	//   flexibleWidth: true,
+	//   offset: 10,
+	//   onLayoutChanged: undefined,
+	//   outerOffset: 10,
+	//   possibleFilters: [],
+	//   resizeDelay: 50,
+	//   verticalOffset: 0
+	// });
 
 }

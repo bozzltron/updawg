@@ -165,10 +165,22 @@ form {
 	border:1px solid #e7e7e7;
 	border-radius:3px;
 	background-color: #fff;
+	margin-bottom:15px;
 }
 
 .thing img {
 	width:100%;
+	max-width:400px;
+	max-height:400px;
+	float:left;
+	margin-right:15px;
+}
+
+@media screen and (max-width: 600px) {
+  .thing img {
+  	float:none;
+  	margin:0;
+  }
 }
 
 .thing .info {
